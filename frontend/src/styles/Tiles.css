@@ -1,0 +1,37 @@
+.whiteTile {
+    background-color: white;
+}
+
+.blackTile {
+    background-color: rgb(25, 113, 3);
+}
+
+.moveTile {
+    background-color: grey;
+}
+
+.selectedTile {
+    background-color: yellow;
+}
+
+.tileContainer {
+    width: 5vw;
+    height: 0;
+    padding-top: 5vw;
+    position: relative;
+}
+  
+.tileContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.pieceImage {
+    width: 100%;
+}
