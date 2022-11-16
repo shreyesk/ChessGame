@@ -3,7 +3,7 @@ class Game {
       this.board = board();
       this.moveHistory;
       this.player;
-      //this.matchHistory;
+      // this.matchHistory;
     }
 
     resetBoard(){

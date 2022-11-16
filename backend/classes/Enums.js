@@ -8,8 +8,8 @@ const types = {
 };
 
 const colors = {
-    BLACK: 1,
-    WHITE: 0
+    WHITE: 0,
+    BLACK: 1
 }
 
 const vals = {
