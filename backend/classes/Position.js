@@ -1,7 +1,7 @@
 class Position {
     constructor(row, col) {
-        this.row = row;
-        this.col = col;
+        this.row = Number(row);
+        this.col = Number(col);
     }
 
     rowAndCol(row, col){

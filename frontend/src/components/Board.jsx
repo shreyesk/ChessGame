@@ -100,14 +100,6 @@ function isValidMove(row, col) {
 }
 
 function handleTileClick(row, col, setTiles) {
-    // makeMove(6, 4, 4, 4).then(res => {
-    //     makeMove(1, 4, 3, 4).then(res2 => {
-    //         getBoardState().then(boardState => {
-    //             updateFromBoardState(boardState, setTiles);
-    //         })
-    //     });
-    // });
-
     getBoardState().then(boardState => {
         updateFromBoardState(boardState, setTiles);
         let clickedTile = boardState.grid[row][col];

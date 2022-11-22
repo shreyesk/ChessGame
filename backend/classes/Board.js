@@ -21,7 +21,7 @@ class Board {
                 this.grid[i][j] = new Tile(null, new Position(i, j));
             }
         }
-        for(var i = 0; i < 8; i++) {
+        for(let i = 0; i < 8; i++) {
             let newPiece = new Piece(new Position(6, i), 1, colors.BLACK, types.PAWN);
             this.piecesInPlay.push(newPiece);
             this.grid[6][i].pieceOccupying = newPiece;
@@ -29,7 +29,8 @@ class Board {
             this.piecesInPlay.push(newPiece);
             this.grid[1][i].pieceOccupying = newPiece;
         }
-        
+
+
         // Create rooks
         let newPiece = new Piece(new Position(7, 0), 1, colors.BLACK, types.ROOK);
         this.piecesInPlay.push(new Piece(new Position(7, 0), 1, colors.BLACK, types.ROOK));
@@ -144,7 +145,7 @@ class Board {
                     possibleMoves.push(new Position(row - 1, col - 1))
             }
         }
-        if(col + 1 < 7) {
+        if(col + 1 < 8) {
             let right = this.grid[row][col + 1].pieceOccupying
             if(piece.team == colors.WHITE) {
                 if(right != null && right.team == colors.BLACK && right.type == types.PAWN && right.numMoves == 1 && right == this.lastMoved)
@@ -329,8 +330,6 @@ class Board {
         return possibleMoves;
     }
 
-
-
     generateMoves(piece) {
         if(piece === null){
             return []
@@ -353,10 +352,10 @@ class Board {
         }
         return []
     }
-    isSquareAttacked(piece, position){
-        let teamColor = piece.team;
+
+    isSquareAttacked(team, position){
         for(let i = 0; i < this.piecesInPlay.length; i++){
-            if(this.piecesInPlay[i].team != teamColor && this.piecesInPlay[i].type != types.KING){
+            if(this.piecesInPlay[i].team != team && this.piecesInPlay[i].type != types.KING){
                 this.currentTeam = this.currentTeam == colors.WHITE ? colors.BLACK : colors.WHITE
                 let moves = this.generateMoves(this.piecesInPlay[i]);
                 this.currentTeam = this.currentTeam == colors.WHITE ? colors.BLACK : colors.WHITE
@@ -382,6 +381,14 @@ class Board {
         return ret;
     }
     
+    isKingSafe(team) {
+        for(let i = 0; i < this.piecesInPlay.length; i++) {
+            if(this.piecesInPlay[i].team == team && this.piecesInPlay[i].type == types.KING) {
+                return this.isSquareAttacked(this.piecesInPlay[i].team, this.piecesInPlay[i].position)
+            }
+        }
+    }
+
     generateKing(piece) {
         let row = Number(piece.position.row);
         let col = Number(piece.position.col);
@@ -393,7 +400,7 @@ class Board {
                         continue;
                     }
                     let pos = new Position(row + i, col + j);
-                    if(!this.isSquareAttacked(piece, pos) && (this.grid[row + i][col + j]?.pieceOccupying == null || this.grid[row + i][col + j]?.pieceOccupying.team != piece.team)) {
+                    if(!this.isSquareAttacked(piece.team, pos) && (this.grid[row + i][col + j]?.pieceOccupying == null || this.grid[row + i][col + j]?.pieceOccupying.team != piece.team)) {
                         possibleMoves.push(pos);
                     }
                 }
@@ -407,7 +414,11 @@ class Board {
         // remove the piece pointer from the initial tile
         // set the piece pointer for the end tile to be piece
         let piece = this.grid[currRow][currCol].pieceOccupying;
-
+        currRow = Number(currRow)
+        currCol = Number(currCol)
+        endRow = Number(endRow)
+        endCol = Number(endCol)
+        
         // check if en passant took place
         if(piece.team == colors.BLACK && piece.type == types.PAWN && endCol != currCol && this.grid[endRow][endCol].pieceOccupying == null) {
             this.grid[endRow + 1][endCol].pieceOccupying = null;
@@ -415,7 +426,7 @@ class Board {
             this.grid[endRow - 1][endCol].pieceOccupying = null;
         }
 
-        this.grid[endRow][endCol].pieceOccupying = new Piece(piece.position, piece.weight, piece.team, piece.type)
+        this.grid[endRow][endCol].pieceOccupying = piece
         this.grid[endRow][endCol].pieceOccupying.position.rowAndCol(endRow, endCol)
         this.grid[endRow][endCol].pieceOccupying.incrementMoves()
         this.lastMoved = this.grid[endRow][endCol].pieceOccupying

@@ -30,7 +30,6 @@ app.get("/makeMove", (req, res) => {
   let fromCol = req.query['fromCol'];
   let toRow = req.query['toRow'];
   let toCol = req.query['toCol'];
-  
   board.move(fromRow, fromCol, toRow, toCol);
   res.send(board);
 });
